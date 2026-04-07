@@ -1,0 +1,54 @@
+name: ai-smart-traffic-signal
+version: "1.0.0"
+description: >
+  A 4-way traffic intersection RL environment where an agent controls
+  signals to minimize congestion.
+
+author: Hackathon Team
+
+environment:
+  file: traffic_env.py
+  class: TrafficEnvironment
+
+api:
+  reset: reset
+  step: step
+  state: state
+
+observation_space:
+  type: array
+  shape: [4]
+  description: cars in [North, South, East, West]
+  min: 0
+  max: 30
+
+action_space:
+  type: discrete
+  n: 4
+  description: choose which lane gets green
+  actions:
+    0: North
+    1: South
+    2: East
+    3: West
+
+reward:
+  description: negative of total waiting cars
+  range: [-120, 0]
+
+tasks:
+  - name: easy
+    params:
+      arrival_rate: 1
+
+  - name: medium
+    params:
+      arrival_rate: 2
+
+  - name: hard
+    params:
+      arrival_rate: 4
+
+evaluation:
+  grader: grader.py
+  score_range: [0.0, 1.0]
